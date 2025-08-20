@@ -186,7 +186,6 @@ geomag_calib <- function(tag,
 
 #' @noRd
 geomag_calib_rm <- function(mag_calib, tag) {
-
   # Remove values with excessive magnetic field intensity
   mn <- sqrt(mag_calib$magnetic_x^2 + mag_calib$magnetic_y^2 +
     mag_calib$magnetic_z^2)

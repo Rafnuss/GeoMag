@@ -7,19 +7,27 @@
 plot_mag(tag, type = "magnetic", stap_id = NULL, path = NULL)
 }
 \arguments{
-\item{tag}{A \href{https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html}{GeoPressureR tag object} containing magnetic (and optionally calibration) data.}
+\item{tag}{A \href{https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html}{GeoPressureR tag object } containing magnetic (and
+optionally calibration) data.}
 
-\item{type}{Character, plot type. One of "magnetic", "calib", "acceleration", "acceleration_p", "timeseries", or "histogram".}
+\item{type}{Character, plot type. One of "magnetic", "calib", "acceleration", "acceleration_p",
+"timeseries", or "histogram".}
 
-\item{stap_id}{Integer or vector, stationary period(s) to plot calibration fit for (type="calib").}
+\item{stap_id}{Integer or vector, stationary period(s) to plot calibration fit for
+(type="calib").}
 
-\item{path}{Optional, a data frame with columns \code{start}, \code{end}, \code{stap_id}, \code{lon}, \code{lat} for plotting reference paths in "timeseries" or "histogram" types.}
+\item{path}{Optional, a data frame with columns \code{start}, \code{end}, \code{stap_id}, \code{lon}, \code{lat} for
+plotting reference paths in "timeseries" or "histogram" types.}
 }
 \value{
-A plotly \code{plot_ly} object (interactive 3D/2D plot) or a ggplotly object for time series/histogram types.
+A plotly \code{plot_ly} object (interactive 3D/2D plot) or a ggplotly object for time
+series/histogram types.
 }
 \description{
-Provides interactive 3D and 2D plots for exploring \href{https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html}{GeoPressureR tag object} sensor data, including raw and calibrated magnetic data, fitted calibration ellipsoids, and (projected) acceleration data. Color-coding by stationary period or movement state is supported. Also supports time series and histogram error plots against reference paths.
+Provides interactive 3D and 2D plots for exploring \href{https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html}{GeoPressureR tag object } sensor data, including
+raw and calibrated magnetic data, fitted calibration ellipsoids, and (projected) acceleration
+data. Color-coding by stationary period or movement state is supported. Also supports time
+series and histogram error plots against reference paths.
 
 Plot types:
 \itemize{
@@ -27,8 +35,10 @@ Plot types:
 \item \strong{"calib"}: Calibration points and fitted ellipsoids for selected periods.
 \item \strong{"acceleration"}: Raw acceleration, colored by static/moving classification.
 \item \strong{"acceleration_p"}: Projected acceleration (NED frame), with reference gravity.
-\item \strong{"timeseries"}: Time series of inclination and intensity, with optional reference path overlay.
-\item \strong{"histogram"}: Histogram of errors (sample and mean per stationary period) against reference path.
+\item \strong{"timeseries"}: Time series of inclination and intensity, with optional reference
+path overlay.
+\item \strong{"histogram"}: Histogram of errors (sample and mean per stationary period)
+against reference path.
 }
 }
 \details{
@@ -45,10 +55,8 @@ withr::with_dir(system.file("extdata", package = "GeoMag"), {
   tag <- tag_create("14DM", quiet = TRUE)
   tag <- tag_label(tag, quiet = TRUE)
   tag <- geomag_calib(tag, quiet = TRUE)
-  plot_mag(tag, type = "magnetic")
-  plot_mag(tag, type = "calib", stap_id = 1:2)
-  plot_mag(tag, type = "acceleration")
-  plot_mag(tag, type = "acceleration_p")
-  # For time series/histogram, provide a path data.frame
 })
+plot_mag(tag, type = "acceleration")
+plot_mag(tag, type = "magnetic")
+plot_mag(tag, type = "calib")
 }

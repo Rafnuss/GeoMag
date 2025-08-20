@@ -37,7 +37,9 @@ geomag_calib_fit <- function(
   # Ensure no NA in mag_calib
   mag_calib <- mag_calib[
     stats::complete.cases(
-    mag_calib[, c("magnetic_x", "magnetic_y", "magnetic_z")]), ]
+      mag_calib[, c("magnetic_x", "magnetic_y", "magnetic_z")]
+    ),
+  ]
 
   # Compute pitch and roll for mag_calib if acceleration present (used in stap methods)
   if (all(c("acceleration_x", "acceleration_y", "acceleration_z") %in% names(mag_calib))) {

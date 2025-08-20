@@ -1,7 +1,13 @@
+utils::globalVariables(c(".data"))
+
 #' Interactive Visualization of Magnetic and Acceleration Data
 #'
 #' @description
-#' Provides interactive 3D and 2D plots for exploring [GeoPressureR tag object](https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html) sensor data, including raw and calibrated magnetic data, fitted calibration ellipsoids, and (projected) acceleration data. Color-coding by stationary period or movement state is supported. Also supports time series and histogram error plots against reference paths.
+#' Provides interactive 3D and 2D plots for exploring [GeoPressureR tag object
+#' ](https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html) sensor data, including
+#' raw and calibrated magnetic data, fitted calibration ellipsoids, and (projected) acceleration
+#' data. Color-coding by stationary period or movement state is supported. Also supports time
+#' series and histogram error plots against reference paths.
 #'
 #' Plot types:
 #' \itemize{
@@ -9,16 +15,24 @@
 #'   \item \strong{"calib"}: Calibration points and fitted ellipsoids for selected periods.
 #'   \item \strong{"acceleration"}: Raw acceleration, colored by static/moving classification.
 #'   \item \strong{"acceleration_p"}: Projected acceleration (NED frame), with reference gravity.
-#'   \item \strong{"timeseries"}: Time series of inclination and intensity, with optional reference path overlay.
-#'   \item \strong{"histogram"}: Histogram of errors (sample and mean per stationary period) against reference path.
+#'   \item \strong{"timeseries"}: Time series of inclination and intensity, with optional reference
+#'    path overlay.
+#'   \item \strong{"histogram"}: Histogram of errors (sample and mean per stationary period)
+#'   against reference path.
 #' }
 #'
-#' @param tag A [GeoPressureR tag object](https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html) containing magnetic (and optionally calibration) data.
-#' @param type Character, plot type. One of "magnetic", "calib", "acceleration", "acceleration_p", "timeseries", or "histogram".
-#' @param stap_id Integer or vector, stationary period(s) to plot calibration fit for (type="calib").
-#' @param path Optional, a data frame with columns `start`, `end`, `stap_id`, `lon`, `lat` for plotting reference paths in "timeseries" or "histogram" types.
+#' @param tag A [GeoPressureR tag object
+#' ](https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html) containing magnetic (and
+#'  optionally calibration) data.
+#' @param type Character, plot type. One of "magnetic", "calib", "acceleration", "acceleration_p",
+#'  "timeseries", or "histogram".
+#' @param stap_id Integer or vector, stationary period(s) to plot calibration fit for
+#' (type="calib").
+#' @param path Optional, a data frame with columns `start`, `end`, `stap_id`, `lon`, `lat` for
+#' plotting reference paths in "timeseries" or "histogram" types.
 #'
-#' @return A plotly `plot_ly` object (interactive 3D/2D plot) or a ggplotly object for time series/histogram types.
+#' @return A plotly `plot_ly` object (interactive 3D/2D plot) or a ggplotly object for time
+#' series/histogram types.
 #'
 #' @details
 #' - Uses the `scico` or `viridisLite` palettes for clear color separation.
@@ -33,9 +47,9 @@
 #'   tag <- tag_label(tag, quiet = TRUE)
 #'   tag <- geomag_calib(tag, quiet = TRUE)
 #' })
-#'   plot_mag(tag, type = "acceleration")
-#'   plot_mag(tag, type = "magnetic")
-#'   plot_mag(tag, type = "calib")
+#' plot_mag(tag, type = "acceleration")
+#' plot_mag(tag, type = "magnetic")
+#' plot_mag(tag, type = "calib")
 #' @export
 plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
   # Ensure stap_id exists for all points
@@ -51,11 +65,11 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
       add_3d_scatter(tag$magnetic, "magnetic_x", "magnetic_y", "magnetic_z", "stap_id", cols)
   } else if (type == "calib") {
     if (!"I" %in% names(tag$magnetic)) {
-        cli::cli_abort(c(
-          x = "Magnetic data has not yet be calibrated.",
-          ">" = "Please run {.fun geomag_calib} first."
-        ))
-      }
+      cli::cli_abort(c(
+        x = "Magnetic data has not yet be calibrated.",
+        ">" = "Please run {.fun geomag_calib} first."
+      ))
+    }
 
     if (!"stap_id" %in% names(tag$mag_calib)) {
       tag$mag_calib$stap_id <- 1
@@ -76,9 +90,14 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
       add_3d_scatter(tag$mag_calib, "magnetic_x", "magnetic_y", "magnetic_z", "stap_id", cols)
 
     for (i_stap in stap_id) {
-      radius <- tag$param$geomag_calib$radius_shape * tag$param$geomag_calib$radius_amplitude[i_stap]
+      radius <- tag$param$geomag_calib$radius_shape *
+        tag$param$geomag_calib$radius_amplitude[i_stap]
       p <- p |>
-        add_ellipsoid_mesh(radius = radius, offset = tag$param$geomag_calib$offset, color = cols[i_stap])
+        add_ellipsoid_mesh(
+          radius = radius,
+          offset = tag$param$geomag_calib$offset,
+          color = cols[i_stap]
+        )
     }
   } else if (type %in% c("acceleration", "acceleration_p")) {
     # Combine acceleration and acceleration_p logic
@@ -90,7 +109,10 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
     )
     if (type == "acceleration") {
       cols_acc <- c("acceleration_x", "acceleration_y", "acceleration_z")
-      axis_titles <- list(title = "Raw Acceleration (sensor frame)", x = "X (forward)", y = "Y (right)", z = "Z (down)")
+      axis_titles <- list(
+        title = "Raw Acceleration (sensor frame)",
+        x = "X (forward)", y = "Y (right)", z = "Z (down)"
+      )
     } else {
       if (!"acceleration_xp" %in% names(tag$magnetic)) {
         cli::cli_abort(c(
@@ -99,7 +121,10 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
         ))
       }
       cols_acc <- c("acceleration_xp", "acceleration_yp", "acceleration_zp")
-      axis_titles <- list(title = "Projected Acceleration (Horizontal plane of Earth)", x = "X_p (forward)", y = "Y_p (right)", z = "Z_p (down)")
+      axis_titles <- list(
+        title = "Projected Acceleration (Horizontal plane of Earth)",
+        x = "X_p (forward)", y = "Y_p (right)", z = "Z_p (down)"
+      )
     }
     p <- plotly::plot_ly() |>
       add_3d_scatter(
@@ -131,27 +156,26 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
       )
     }
   } else if (type == "timeseries" || type == "histogram") {
-
     if (!"I" %in% names(tag$magnetic)) {
-        cli::cli_abort(c(
-          x = "Magnetic data has not yet be calibrated.",
-          ">" = "Please run {.fun geomag_calib} first."
-        ))
-      }
+      cli::cli_abort(c(
+        x = "Magnetic data has not yet be calibrated.",
+        ">" = "Please run {.fun geomag_calib} first."
+      ))
+    }
 
     mag <- geomag_clean(tag) |>
       dplyr::filter(stap_id == round(stap_id)) |>
       dplyr::mutate(stap_id = factor(stap_id)) |>
-      dplyr::mutate(I = I * 180 / pi) |>
-      tidyr::pivot_longer(cols = c(I, F), names_to = "variable", values_to = "value") |>
-      dplyr::select(date, stap_id, variable, value)
+      dplyr::mutate(I = .data$I * 180 / pi) |>
+      tidyr::pivot_longer(cols = c(.data$I, .data$F), names_to = "variable", values_to = "value") |>
+      dplyr::select("date", "stap_id", "variable", "value")
 
     segments <- mag |>
-      dplyr::group_by(stap_id, variable) |>
+      dplyr::group_by(.data$stap_id, .data$variable) |>
       dplyr::summarise(
         start = min(date),
         end = max(date),
-        mean_val = mean(value, na.rm = TRUE),
+        mean_val = mean(.data$value, na.rm = TRUE),
         .groups = "drop"
       )
 
@@ -166,19 +190,19 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
         numeric(2)
       ))
       path_long <- path |>
-        dplyr::select(start, end, stap_id, F, I) |>
-        tidyr::pivot_longer(cols = c(F, I), names_to = "variable", values_to = "val") |>
-        dplyr::mutate(stap_id = factor(stap_id))
+        dplyr::select("start", "end", "stap_id", "F", "I") |>
+        tidyr::pivot_longer(cols = c(.data$F, .data$I), names_to = "variable", values_to = "val") |>
+        dplyr::mutate(stap_id = factor(.data$stap_id))
     }
 
     if (type == "timeseries") {
-      p <- ggplot2::ggplot(mag, ggplot2::aes(x = date, y = value)) +
+      p <- ggplot2::ggplot(mag, ggplot2::aes(x = .data$date, y = .data$value)) +
         ggplot2::geom_point(size = 1.5, alpha = 0.5) +
         ggplot2::geom_segment(
           data = segments,
           ggplot2::aes(
-            x = start, xend = end, y = mean_val, yend = mean_val,
-            color = stap_id
+            x = .data$start, xend = .data$end, y = .data$mean_val, yend = .data$mean_val,
+            color = .data$stap_id
           ),
           linewidth = 1.2,
           show.legend = FALSE
@@ -188,7 +212,7 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
         p <- p +
           ggplot2::geom_segment(
             data = path_long,
-            ggplot2::aes(x = start, xend = end, y = val, yend = val),
+            ggplot2::aes(x = .data$start, xend = .data$end, y = .data$val, yend = .data$val),
             color = "red",
             linewidth = 1.2,
             show.legend = FALSE
@@ -198,7 +222,8 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
       p <- p +
         ggplot2::scale_color_manual(values = cols) +
         ggplot2::facet_wrap(
-          ~variable, ncol = 1,
+          ~variable,
+          ncol = 1,
           scales = "free_y",
           labeller = ggplot2::labeller(variable = c(
             I = "Inclinaison (\u00B0)",
@@ -216,12 +241,12 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
       err <- mag |>
         dplyr::left_join(path_long, by = c("stap_id", "variable")) |>
         dplyr::mutate(
-          err = value - val
+          err = .data$value - .data$val
         ) |>
         dplyr::select(-c("date", "start", "end", "value", "val"))
 
       err_stap <- err |>
-        dplyr::group_by(stap_id, variable) |>
+        dplyr::group_by(.data$stap_id, .data$variable) |>
         dplyr::summarise(
           err = mean(err, na.rm = TRUE),
           .groups = "drop"
@@ -233,10 +258,10 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
       )
 
       sds <- df |>
-        dplyr::group_by(type, variable) |>
+        dplyr::group_by(.data$type, .data$variable) |>
         dplyr::summarise(sd = stats::sd(err, na.rm = TRUE), .groups = "drop")
 
-      p <- ggplot2::ggplot(df, ggplot2::aes(x = err)) +
+      p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$err)) +
         ggplot2::geom_histogram(bins = 40) +
         ggplot2::facet_grid(type ~ variable, scales = "free") +
         ggplot2::geom_text(

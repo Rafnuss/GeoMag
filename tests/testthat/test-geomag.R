@@ -53,6 +53,6 @@ tag <- geomag_map(tag, quiet = TRUE)
 plot(tag, "map_magnetic")
 
 # Plot
-path = tag2path(tag)
-plot_mag(tag, "timeseries", path=path)
-plot_mag(tag2, "histogram", path=path)
+path <- tag2path(tag)
+plot_mag(tag, "timeseries", path = path)
+plot_mag(tag2, "histogram", path = path)

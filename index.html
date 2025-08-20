@@ -50,41 +50,17 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><strong>GeoMag</strong> is an R package to estimate animal geolocation using magnetic field data.<br>
-It provides tools for robust calibration, outlier removal, likelihood map computation, and interactive 3D visualization of magnetic and acceleration data.<br>
-GeoMag is designed to work seamlessly with <a href="https://raphaelnussbaumer.com/GeoPressureR" class="external-link">GeoPressureR</a>, enabling high-resolution migratory track reconstruction using multi-sensor archival tags.</p>
-<hr>
-<div class="section level2">
-<h2 id="id_-overview">🚀 Overview<a class="anchor" aria-label="anchor" href="#id_-overview"></a>
-</h2>
-<p>GeoMag implements a robust workflow for geolocation based on magnetic field measurements, including:</p>
+<p><strong>GeoMag</strong> is an R package to estimate animal geolocation based on triaxis magnetic field measurements, including:</p>
 <ul>
 <li>
-<strong>Calibration:</strong> Correct sensor biases, scale factors, and rotations using in situ or external datasets.</li>
+<strong>Magnetic calibration:</strong> Correct magnetic distortion using in-situ or in-vitro data.</li>
 <li>
-<strong>Outlier removal:</strong> Automatically detect and exclude spurious measurements.</li>
-<li>
-<strong>Likelihood mapping:</strong> Compute spatial likelihood maps using the World Magnetic Model (WMM), comparing observed and predicted intensity and inclination.</li>
+<strong>Likelihood map estimation:</strong> Compute spatial likelihood maps using the World Magnetic Model (WMM), comparing observed and known intensity and inclination.</li>
 <li>
 <strong>Interactive visualization:</strong> Explore raw and calibrated data, ellipsoid fits, and 3D scatterplots.</li>
 </ul>
+<p>GeoMag is designed to work seamlessly with <a href="https://raphaelnussbaumer.com/GeoPressureR" class="external-link">GeoPressureR</a>, enabling high-resolution migratory track reconstruction using multi-sensor archival tags.</p>
 <hr>
-</div>
-<div class="section level2">
-<h2 id="id_-main-features">🦅 Main Features<a class="anchor" aria-label="anchor" href="#id_-main-features"></a>
-</h2>
-<ul>
-<li>
-<strong>Magnetic sensor calibration</strong> (including ellipsoid and sphere fitting)</li>
-<li>
-<strong>Likelihood mapping</strong> of stationary periods (<code>geomag_map</code>)</li>
-<li><strong>Integration with <a href="https://raphaelnussbaumer.com/GeoPressureR" class="external-link">GeoPressureR</a> tag analysis workflow</strong></li>
-<li>
-<strong>Interactive 3D plotting</strong> of sensor data (<code>plot_mag</code>)</li>
-<li><strong>Support for WMM-based reference maps</strong></li>
-</ul>
-<hr>
-</div>
 <div class="section level2">
 <h2 id="id_-installation">📦 Installation<a class="anchor" aria-label="anchor" href="#id_-installation"></a>
 </h2>
@@ -95,22 +71,12 @@ GeoMag is designed to work seamlessly with <a href="https://raphaelnussbaumer.co
 <hr>
 </div>
 <div class="section level2">
-<h2 id="id_-learn-more">📖 Learn More<a class="anchor" aria-label="anchor" href="#id_-learn-more"></a>
-</h2>
-<ul>
-<li>The <a href="https://raphaelnussbaumer.com/GeoPressureManual/" class="external-link">GeoPressureManual</a> includes a dedicated section on magnetic-based geolocation and demonstrates the GeoMag workflow with real data.</li>
-<li>See also the <a href="https://raphaelnussbaumer.com/GeoPressureR/reference/index.html" class="external-link">GeoPressureR reference</a> for tag object structure and integration.</li>
-</ul>
-<hr>
-</div>
-<div class="section level2">
 <h2 id="id_️-example-usage">🛠️ Example Usage<a class="anchor" aria-label="anchor" href="#id_%EF%B8%8F-example-usage"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Rafnuss/GeoMag" class="external-link">GeoMag</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Rafnuss/GeoPressureR" class="external-link">GeoPressureR</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Rafnuss/GeoPressureR" class="external-link">GeoPressureR</a></span><span class="op">)</span></span>
 <span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GeoMag"</span><span class="op">)</span>, <span class="op">{</span></span>
 <span>  <span class="co"># Create a GeoPressureR tag object (see GeoPressureR documentation)</span></span>
 <span>  <span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html" class="external-link">tag_create</a></span><span class="op">(</span><span class="st">"14DM"</span><span class="op">)</span></span>
@@ -143,25 +109,6 @@ GeoMag is designed to work seamlessly with <a href="https://raphaelnussbaumer.co
 <p>For citation information in R:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"GeoMag"</span><span class="op">)</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level2">
-<h2 id="id_-related-projects">🔗 Related Projects<a class="anchor" aria-label="anchor" href="#id_-related-projects"></a>
-</h2>
-<ul>
-<li>
-<a href="https://raphaelnussbaumer.com/GeoPressureR" class="external-link">GeoPressureR</a>: Pressure-based geolocation</li>
-<li>
-<a href="https://github.com/Rafnuss/GeoLocatoR" class="external-link">GeoLocatoR</a>: Data packaging for geolocator datasets</li>
-<li>
-<a href="https://github.com/Rafnuss/GeoPressureTemplate" class="external-link">GeoPressureTemplate</a>: Template repository for geolocator analysis</li>
-</ul>
-<hr>
-</div>
-<div class="section level2">
-<h2 id="id_-license">📝 License<a class="anchor" aria-label="anchor" href="#id_-license"></a>
-</h2>
-<p>This package is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" class="external-link">CC BY 4.0</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -198,7 +145,6 @@ GeoMag is designed to work seamlessly with <a href="https://raphaelnussbaumer.co
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/Rafnuss/GeoMag/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/Rafnuss/GeoMag/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/Rafnuss/GeoMag" class="external-link"><img src="https://codecov.io/gh/Rafnuss/GeoMag/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://github.com/Rafnuss/GeoMag/actions/workflows/lint.yaml" class="external-link"><img src="https://github.com/Rafnuss/GeoMag/actions/workflows/lint.yaml/badge.svg" alt="lint"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
 </ul>

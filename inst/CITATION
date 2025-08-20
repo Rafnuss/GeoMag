@@ -1,0 +1,10 @@
+citHeader("To cite GeoMag in publications use:")
+
+citEntry(
+  entry = "Manual",
+  title = "GeoMag: Geolocation by Magnetic Field",
+  author = person("Raphaël", "Nussbaumer", email = "rafnuss@gmail.com", role = c("aut", "cre")),
+  year = "2025",
+  note = "R package version 0.1.0",
+  url = "https://github.com/Rafnuss/GeoMag"
+)

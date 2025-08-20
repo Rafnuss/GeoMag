@@ -1,0 +1,33 @@
+Package: GeoMag
+Title: Geolocation by Magnetic Field
+URL: https://github.com/Rafnuss/GeoMag,
+    https://raphaelnussbaumer.com/GeoMag/
+Description: 
+    Provides methods to produce likelihood maps of position based on magnetic field data, including calibration, outlier removal, and interactive 3D visualization. Designed for use with animal geolocation workflows and fully compatible with the GeoPressureR framework (see https://raphaelnussbaumer.com/GeoPressureR). Includes functions for calibration, map generation, and integration with World Magnetic Model data.
+Authors@R: 
+    person("Raphaël", "Nussbaumer", , "rafnuss@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8185-1020"))
+License: CC BY 4.0
+Version: 0.1.0
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    cli,
+    assertthat,
+    glue,
+    terra,
+    wmm,
+    withr,
+    GeoPressureR,
+    plotly,
+    tidyr,
+    dplyr,
+    viridisLite,
+    scico,
+    ggplot2,
+    stats,
+Remotes: 
+    rafnuss/GeoPressureR
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2

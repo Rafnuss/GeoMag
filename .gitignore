@@ -49,13 +49,11 @@ Thumbs.db
 # Other hidden files
 .RDataTmp
 .RDataTmp1
-.lintr
 
 # Output and check files
 *.Rout
 
 # Ignore .Rbuildignore itself (optional)
-.Rbuildignore
 .Rproj.user
 .Rdata
 .quarto

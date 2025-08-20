@@ -228,8 +228,8 @@ plot_mag <- function(tag, type = "magnetic", stap_id = NULL, path = NULL) {
         )
 
       df <- rbind(
-        err |> dplyr::mutate(type = "observation (σ_e)"),
-        err_stap |> dplyr::mutate(type = "stap (σ_m)")
+        err |> dplyr::mutate(type = "observation (\\u03c3_e)"),
+        err_stap |> dplyr::mutate(type = "stap (\\u03c3_m)")
       )
 
       sds <- df |>
